@@ -9,18 +9,19 @@ public class ClienteNegocio implements INegocio<ClienteDTO>{
 
     private Set<ClienteDTO> lista;
 
-    public ClienteNegocio() {
-        lista = new HashSet<>();
-    }
+    private final CienteDAO clienteDAO;
 
     @Override
     public void incluir(ClienteDTO cliente) throws ObjetoJaExisteException {
         if (!lista.add(cliente))
             throw new ObjetoJaExisteException();
+
+        clienteDAO.save(ClienteDTO.EntityFromDTO(cliente));
     }
 
     @Override
     public Set<ClienteDTO> listar() {
-        return lista;
+        return PaisDTO.DTOsFromEntities(clienteDAO.findAll());
     }
+
 }
